@@ -2,7 +2,7 @@
 #define STACK_T
 
 #ifndef STACK_ELEM_T_DEFINED
-    typedef int stack_elem_t;
+    typedef double stack_elem_t;
 #endif
 
 #include <assert.h>
@@ -58,7 +58,7 @@ struct Stack_t {
     stack_elem_t* data;
     int size;
     int capacity;
-    Stack_info_t Stack_info;
+    struct Stack_info_t Stack_info;
     What_error stack_errors;
 };
 
@@ -70,17 +70,18 @@ What_error StackCtor (const char* file_name,
                Stack_t*    stack,
                int         capacity);
 
+void StackDump(Stack_t* stack);
+What_error StackOkey (Stack_t* stack);
+
 
 What_error StackPush (Stack_t*       stack,
-               stack_elem_t   value);
+                      stack_elem_t   value);
 
 stack_elem_t StackPop (Stack_t* stack);
 
-int StackDtor (Stack_t* stack);
+void StackDtor (Stack_t* stack);
 
 void NullingData (Stack_t* stack);
-
-What_error StackOkey (Stack_t* stack);
 
 void resizing_stack(Stack_t* stack);
 

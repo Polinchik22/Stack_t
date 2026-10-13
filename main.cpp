@@ -25,6 +25,7 @@ int main() {
 
     StackPush(&test_stack, 6.5);
     StackPush(&test_stack, 5.5);
-    StackPop(&test_stack);
+    double x1 = StackPop(&test_stack);
+    printf("%f", x1);
 
 }

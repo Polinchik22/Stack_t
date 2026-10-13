@@ -1,3 +1,7 @@
+#ifndef STACK_ELEM_T_DEFINED
+    typedef double stack_elem_t;
+#endif
+
 #include "Stack_t.h"
 
 What_error StackCtor (const char* file_name,
@@ -23,39 +27,64 @@ What_error StackCtor (const char* file_name,
 
 
 What_error StackPush (Stack_t*       stack,
-               stack_elem_t   value) {
+                      stack_elem_t   value) {
 
     resizing_stack(stack);
     (stack->data)[stack->size++] = value;
 
+    StackOkey (stack);
     return stack->stack_errors;
     }
 
 
 stack_elem_t StackPop (Stack_t* stack) {
+    StackOkey (stack);
+
     return stack->data[stack->size--];
+
+        StackOkey (stack);
+
 }
 
 
-int StackDtor (Stack_t* stack) {
+void StackDtor (Stack_t* stack) {
+    StackOkey (stack);
+
+
     NullingData(stack);
     free(stack->data);
     stack = NULL;
+
+    StackOkey (stack);
 }
 
 
 void NullingData (Stack_t* stack) {
+    StackOkey (stack);
+
     for (int ind = 0; ind < stack->capacity; ind++) {
         stack->data[ind] = POISON(stack_elem_t);
     }
     stack->stack_errors = POISON_FOR_ERROR_VALUE;
+
+    StackOkey (stack);
 }
 
 
 What_error StackOkey (Stack_t* stack) {
-    if (!stack) {return NULL_ADDRESS;}
 
-    if (stack->size > stack->capacity) {return SIZE_BIGGER_THEN_CAPACITY;}
+    if (!stack) {
+        stack->stack_errors = NULL_ADDRESS;
+        StackDump(stack);
+
+        return NULL_ADDRESS;
+    }
+
+    if (stack->size > stack->capacity) {
+        stack->stack_errors = SIZE_BIGGER_THEN_CAPACITY;
+        StackDump(stack);
+
+        return SIZE_BIGGER_THEN_CAPACITY;}
 
     return ALL_IS_OK;
 }
@@ -93,4 +122,33 @@ void down_capacity(Stack_t* stack) {
 }
 
 
+void StackDump(Stack_t* stack) {
+    FILE* errors_file = fopen("Errors", "a");
 
+    switch(stack->stack_errors) {
+        case(POISON_FOR_ERROR_VALUE):
+            fprintf(errors_file, "Обращение к зануленному элементу");
+            break;
+        case (ALL_IS_OK):
+            fprintf(errors_file, "Ошибок нет");
+            break;
+        case (NULL_ADDRESS):
+            fprintf(errors_file, "Работа с нулевым адресом");
+            break;
+        case (SIZE_BIGGER_THEN_CAPACITY):
+            fprintf(errors_file, "Элементов больше че мвыделенно памяти");
+            break;
+        case (REALLOC_TO_UP_PROBLEM):
+            fprintf(errors_file, "Ошибка во время увеличения размеров стека");
+            break;
+        case (REALLOC_TO_DOWN_PROBLEM):
+            fprintf(errors_file, "Ошибка во время уменьшения размера стека");
+            break;
+        default:
+            fprintf(errors_file, "Неизвестное значение в поле ошибки стека: %d", stack->stack_errors);
+
+    }
+
+    fprintf(errors_file, "В стеке %s, в фаиле: %s, в функции: %s, на строчке: %d \n",
+            stack->Stack_info.stack_name, stack->Stack_info.file_name, stack->Stack_info.function_name, stack->Stack_info.line_number);
+}
