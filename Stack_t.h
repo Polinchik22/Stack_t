@@ -26,7 +26,8 @@ enum What_error {
     NULL_ADDRESS,
     SIZE_BIGGER_THEN_CAPACITY,
     REALLOC_TO_UP_PROBLEM,
-    REALLOC_TO_DOWN_PROBLEM
+    REALLOC_TO_DOWN_PROBLEM,
+    DESTROYED_STACK
 };
 
 
@@ -73,7 +74,6 @@ What_error StackCtor (const char* file_name,
 void StackDump(Stack_t* stack);
 What_error StackOkey (Stack_t* stack);
 
-
 What_error StackPush (Stack_t*       stack,
                       stack_elem_t   value);
 
@@ -89,4 +89,9 @@ void up_capacity(Stack_t* stack);
 
 void down_capacity(Stack_t* stack);
 
+void Printing_stack(Stack_t* stack);
+
+void Printing_separator_file(const char* file_name, const char* separator, int len_of_separation_line);
+
 #endif
+
