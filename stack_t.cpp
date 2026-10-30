@@ -70,15 +70,22 @@ stack_elem_t StackPop (Stack_t* stack) {
 
 
 void StackDtor (Stack_t* stack) {
+    assert(stack);
+
     refreshing_info(stack);
     StackOkey (stack);
 
 
     NullingData(stack);
     free(stack->data);
-    stack = NULL;
 
     stack->stack_errors = DESTROYED_STACK;
+    stack->data = NULL;
+    stack->size = 0;
+    stack->capacity = 0;
+
+    stack = NULL;
+
 }
 
 
