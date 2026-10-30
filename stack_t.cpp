@@ -21,9 +21,13 @@ What_error StackCtor (const char* file_name,
 
     // TODO все занулено?
 
-    stack->data = (stack_elem_t*) calloc(stack->size, sizeof(stack_elem_t));
-    NullingData(stack);
     stack->capacity = capacity;
+    stack->size = 0;
+
+    stack->data = (stack_elem_t*) calloc(capacity, sizeof(stack_elem_t));
+    assert(stack->data);
+
+    NullingData(stack);
 
     // printf("%d \n", stack->capacity);
     stack->Stack_info = {.stack_name    = stack_name, //TODO сделать макрос на имя

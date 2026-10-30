@@ -39,11 +39,11 @@ enum What_error {
 
 
 
-//#define StackCtor(stack_name, stack, capacity) StackCtor (__FILE__,      \
-//                                                        __FUNCTION__,  \
-//                                                        __LINE__,      \
-//                                                        stack_name, \
-//                                                        stack, \
+//#define StackCtor(stack_name, stack, capacity) StackCtor (__FILE__,
+//                                                        __FUNCTION__,
+//                                                        __LINE__,
+//                                                        stack_name,
+//                                                        stack,
 //                                                        capacity)
 
 
